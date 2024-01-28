@@ -1,0 +1,4 @@
+Put any public file releated to this post in this folder.
+
+Files can be accessed using the path format: /_content/posts/a-sample-post/uploads/file.txt
+Inside the template, use: {{pathUploads}}/file.txt (remember to set the variable first)
