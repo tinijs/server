@@ -10,4 +10,5 @@ export interface Post {
   updated: string;
   thumbnail: string;
   content: string;
+  author: string;
 }
