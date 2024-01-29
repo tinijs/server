@@ -27,7 +27,7 @@ module.exports = function (eleventyConfig) {
       const metadata = await eleventyImage(input, {
         widths: widths || ['auto'],
         formats: ['avif', 'webp', 'auto'],
-        urlPath: '/_content/images/',
+        urlPath: '/tini-content/images/',
         outputDir: path.join(eleventyConfig.dir.output, 'images'),
       });
 
@@ -52,7 +52,7 @@ module.exports = function (eleventyConfig) {
       const metadata = await eleventyImage(input, {
         widths: !width ? ['auto'] : [width],
         formats: ['jpeg'],
-        urlPath: '/_content/images/',
+        urlPath: '/tini-content/images/',
         outputDir: path.join(eleventyConfig.dir.output, 'images'),
       });
 

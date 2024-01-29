@@ -5,7 +5,7 @@ You can organize the content in anyway you see fit.
 + By types: documents, videos, audios, ...
 + By purposes: project-1, topic-2, ...
 
-Files can be accessed using the path format: /_content/uploads/file.txt
+Files can be accessed using the path format: /tini-content/uploads/file.txt
 Inside templates, use: {{pathGlobalUploads}}/file.txt
 
-Alternative, you can put any "uploads" folders inside any item's folder, for example: /_content/posts/a-sample-post/uploads/file.txt
+Alternative, you can put any "uploads" folders inside any item's folder, for example: /tini-content/posts/a-sample-post/uploads/file.txt
