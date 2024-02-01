@@ -20,7 +20,8 @@ module.exports = function (eleventyConfig, options) {
    * Data
    */
 
-  eleventyConfig.addGlobalData('pathGlobalUploads', '/tini-content/uploads');
+  eleventyConfig.addGlobalData('pathRoot', '/tini-content');
+  eleventyConfig.addGlobalData('pathUploads', '/tini-content/uploads');
 
   /*
    * Copy

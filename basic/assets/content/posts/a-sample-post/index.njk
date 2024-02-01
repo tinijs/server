@@ -2,15 +2,18 @@
 {
   "status": "publish",
   "title": "This is a sample post",
-  "description": "This is a post on My Blog about win-win survival strategies.",
+  "desc": "This is a post on My Blog about win-win survival strategies.",
   "created": "2024-01-01",
   "updated": "2024-01-01",
-  "thumbnail": "{% imageUrl "./thumbnail.jpg", 480 %}",
-  "author": "john-doe"
+  "thumbnail": "{% imageUrl "./thumbnail.webp", 480 %}",
+  "image": "{% imageUrl "./image.webp", 1920 %}",
+  "metadata": {
+    "authors": "john-doe"
+  }
 }
 +++
 
-{% set pathUploads = "/tini-content/posts/a-sample-post/uploads" %}
+{% set scopedUploads = "/tini-content/posts/a-sample-post/uploads" %}
 
 <style>
   {% getBundle "css" %}
@@ -64,7 +67,7 @@ console.log('Test');
 
 <h2>Section Header</h2>
 
-<p>Download a uploaded file: <a href="{{pathUploads}}/file.txt" target="_blank">file.txt</a></p>
+<p>Download a uploaded file: <a href="{{scopedUploads}}/file.txt" target="_blank">file.txt</a></p>
 
 <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
 
