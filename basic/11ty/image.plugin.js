@@ -49,16 +49,6 @@ module.exports = function (eleventyConfig) {
     });
   };
 
-  const buildSingleImage = async function (src, options) {
-    options = options || {};
-    const metadata = await buildImage.call(this, src, {
-      ...options,
-      widths: [(options.widths || ['auto'])[0]],
-      formats: [(options.formats || ['auto'])[0]],
-    });
-    return metadata[Object.keys(metadata)[0]][0];
-  };
-
   const buildAndGenerateHTML = async function (
     src,
     alt,
@@ -84,36 +74,7 @@ module.exports = function (eleventyConfig) {
     );
   };
 
-  const buildSingleAndGenerateHTML = async function (
-    src,
-    alt,
-    width,
-    format,
-    imageAttributes,
-    buildOptions,
-    generateHTMLOptions
-  ) {
-    return await buildAndGenerateHTML.call(
-      this,
-      src,
-      alt,
-      !width ? undefined : [width],
-      undefined,
-      imageAttributes,
-      {
-        ...buildOptions,
-        formats: !format ? undefined : [format],
-      },
-      generateHTMLOptions
-    );
-  };
-
-  const buildSingleAndExtractUrl = async function (
-    src,
-    width,
-    format,
-    buildOptions
-  ) {
+  const buildAndExtractUrl = async function (src, width, format, buildOptions) {
     const metadata = await buildImage.call(this, src, {
       ...buildOptions,
       widths: !width ? ['auto'] : [width],
@@ -166,37 +127,13 @@ module.exports = function (eleventyConfig) {
     return result;
   };
 
-  const buildSingleAndExtractData = async function (
-    src,
-    alt,
-    width,
-    format,
-    imageAttributes,
-    buildOptions
-  ) {
-    return await buildAndExtractData.call(
-      this,
-      src,
-      alt,
-      !width ? undefined : [width],
-      undefined,
-      imageAttributes,
-      {
-        ...buildOptions,
-        formats: !format ? undefined : [format],
-      }
-    );
-  };
-
   /*
    * Shortcodes
    */
 
   eleventyConfig.addAsyncShortcode('image', buildAndGenerateHTML);
 
-  eleventyConfig.addAsyncShortcode('imageSingle', buildSingleAndGenerateHTML);
-
-  eleventyConfig.addAsyncShortcode('imageUrl', buildSingleAndExtractUrl);
+  eleventyConfig.addAsyncShortcode('imageUrl', buildAndExtractUrl);
 
   eleventyConfig.addAsyncShortcode(
     'imageData',
@@ -208,27 +145,13 @@ module.exports = function (eleventyConfig) {
     }
   );
 
-  eleventyConfig.addAsyncShortcode(
-    'imageSingleData',
-    async function (target, ...params) {
-      return stringifyData(
-        await buildSingleAndExtractData.apply(this, params),
-        target
-      );
-    }
-  );
-
   /*
    * Filters
    */
 
   eleventyConfig.addFilter('image', buildImage);
 
-  eleventyConfig.addFilter('imageSingle', buildSingleImage);
-
-  eleventyConfig.addFilter('imageUrl', buildSingleAndExtractUrl);
+  eleventyConfig.addFilter('imageUrl', buildAndExtractUrl);
 
   eleventyConfig.addFilter('imageData', buildAndExtractData);
-
-  eleventyConfig.addFilter('imageSingleData', buildSingleAndExtractData);
 };
