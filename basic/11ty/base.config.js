@@ -2,6 +2,8 @@ const {EleventyRenderPlugin} = require('@11ty/eleventy');
 const markdownItAnchor = require('markdown-it-anchor');
 const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const pluginBundle = require('@11ty/eleventy-plugin-bundle');
+const YAML = require('yaml');
+const TOML = require('@iarna/toml');
 
 const pluginImage = require('./image.plugin.js');
 
@@ -30,6 +32,17 @@ module.exports = function (eleventyConfig, options) {
   if (useCopy !== false) {
     eleventyConfig.addPassthroughCopy(useCopy || 'content/**/uploads/**/*');
   }
+
+  /*
+   * Filters
+   */
+
+  eleventyConfig.addFilter('parseJSON', JSON.parse);
+  eleventyConfig.addFilter('parseYAML', YAML.parse);
+  eleventyConfig.addFilter('parseTOML', TOML.parse);
+  eleventyConfig.addFilter('stringifyJSON', JSON.stringify);
+  eleventyConfig.addFilter('stringifyYAML', YAML.stringify);
+  eleventyConfig.addFilter('stringifyTOML', TOML.stringify);
 
   /*
    * Plugins

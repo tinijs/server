@@ -5,6 +5,9 @@
   "author": "Lam Nhan",
   "homepage": "https://server.tinijs.dev",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +37,9 @@
     "@11ty/eleventy-img": "^3.1.8",
     "@11ty/eleventy-plugin-bundle": "^1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
-    "markdown-it-anchor": "^8.6.7"
+    "@iarna/toml": "^2.2.5",
+    "markdown-it-anchor": "^8.6.7",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.9.4",

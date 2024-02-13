@@ -1,5 +1,7 @@
 const eleventyImage = require('@11ty/eleventy-img');
 const path = require('path');
+const YAML = require('yaml');
+const TOML = require('@iarna/toml');
 
 function relativeToInputPath(inputPath, relativeFilePath) {
   const splits = inputPath.split('/');
@@ -16,47 +18,217 @@ function isFullUrl(url) {
   }
 }
 
+function stringifyData(data, target) {
+  const VALID_TARGETS = ['JSON', 'YAML', 'TOML'];
+  if (!~VALID_TARGETS.indexOf(target)) {
+    throw new Error(
+      `Invalid stringify target, allowed values are: ${VALID_TARGETS.join(
+        ', '
+      )}`
+    );
+  }
+  return target === 'JSON'
+    ? JSON.stringify(data)
+    : target === 'YAML'
+    ? YAML.stringify(data)
+    : TOML.stringify(data);
+}
+
 module.exports = function (eleventyConfig) {
-  eleventyConfig.addAsyncShortcode(
-    'image',
-    async function imageShortcode(src, alt, widths, sizes) {
-      const input = isFullUrl(src)
-        ? src
-        : relativeToInputPath(this.page.inputPath, src);
+  const buildImage = function (src, options) {
+    options = options || {};
+    const input = isFullUrl(src)
+      ? src
+      : relativeToInputPath(this.page.inputPath, src);
+    return eleventyImage(input, {
+      ...options,
+      outputDir: path.join(eleventyConfig.dir.output, 'images'),
+      urlPath: '/tini-content/images/',
+      widths: options.widths || ['auto'],
+      formats: options.formats || ['avif', 'webp', 'auto'],
+    });
+  };
 
-      const metadata = await eleventyImage(input, {
-        widths: widths || ['auto'],
-        formats: ['avif', 'webp', 'auto'],
-        urlPath: '/tini-content/images/',
-        outputDir: path.join(eleventyConfig.dir.output, 'images'),
-      });
+  const buildSingleImage = async function (src, options) {
+    options = options || {};
+    const metadata = await buildImage.call(this, src, {
+      ...options,
+      widths: [(options.widths || ['auto'])[0]],
+      formats: [(options.formats || ['auto'])[0]],
+    });
+    return metadata[Object.keys(metadata)[0]][0];
+  };
 
-      const imageAttributes = {
+  const buildAndGenerateHTML = async function (
+    src,
+    alt,
+    widths,
+    sizes,
+    imageAttributes,
+    buildOptions,
+    generateHTMLOptions
+  ) {
+    return eleventyImage.generateHTML(
+      await buildImage.call(this, src, {
+        ...buildOptions,
+        widths,
+      }),
+      {
         alt,
         sizes,
         loading: 'lazy',
         decoding: 'async',
-      };
+        ...imageAttributes,
+      },
+      generateHTMLOptions
+    );
+  };
 
-      return eleventyImage.generateHTML(metadata, imageAttributes);
+  const buildSingleAndGenerateHTML = async function (
+    src,
+    alt,
+    width,
+    format,
+    imageAttributes,
+    buildOptions,
+    generateHTMLOptions
+  ) {
+    return await buildAndGenerateHTML.call(
+      this,
+      src,
+      alt,
+      !width ? undefined : [width],
+      undefined,
+      imageAttributes,
+      {
+        ...buildOptions,
+        formats: !format ? undefined : [format],
+      },
+      generateHTMLOptions
+    );
+  };
+
+  const buildSingleAndExtractUrl = async function (
+    src,
+    width,
+    format,
+    buildOptions
+  ) {
+    const metadata = await buildImage.call(this, src, {
+      ...buildOptions,
+      widths: !width ? ['auto'] : [width],
+      formats: !format ? ['auto'] : [format],
+    });
+    return metadata[Object.keys(metadata)[0]][0].url;
+  };
+
+  const buildAndExtractData = async function (
+    src,
+    alt,
+    widths,
+    sizes,
+    imageAttributes,
+    buildOptions
+  ) {
+    const object = eleventyImage.generateObject(
+      await buildImage.call(this, src, {
+        ...buildOptions,
+        widths,
+      }),
+      {
+        alt,
+        sizes,
+        loading: 'lazy',
+        decoding: 'async',
+        ...imageAttributes,
+      }
+    );
+    // extract result
+    let result = {};
+    for (const tag in object) {
+      if (!Array.isArray(object[tag])) {
+        result = object[tag];
+      } else {
+        let mainProperties = {};
+        const sources = [];
+        for (const child of object[tag]) {
+          const childTagName = Object.keys(child)[0];
+          if (childTagName === 'source') {
+            sources.push(child[childTagName]);
+          } else {
+            mainProperties = child[childTagName];
+          }
+        }
+        result = {...mainProperties, sources};
+      }
+    }
+    // return
+    return result;
+  };
+
+  const buildSingleAndExtractData = async function (
+    src,
+    alt,
+    width,
+    format,
+    imageAttributes,
+    buildOptions
+  ) {
+    return await buildAndExtractData.call(
+      this,
+      src,
+      alt,
+      !width ? undefined : [width],
+      undefined,
+      imageAttributes,
+      {
+        ...buildOptions,
+        formats: !format ? undefined : [format],
+      }
+    );
+  };
+
+  /*
+   * Shortcodes
+   */
+
+  eleventyConfig.addAsyncShortcode('image', buildAndGenerateHTML);
+
+  eleventyConfig.addAsyncShortcode('imageSingle', buildSingleAndGenerateHTML);
+
+  eleventyConfig.addAsyncShortcode('imageUrl', buildSingleAndExtractUrl);
+
+  eleventyConfig.addAsyncShortcode(
+    'imageData',
+    async function (target, ...params) {
+      return stringifyData(
+        await buildAndExtractData.apply(this, params),
+        target
+      );
     }
   );
 
   eleventyConfig.addAsyncShortcode(
-    'imageUrl',
-    async function imageShortcode(src, width) {
-      const input = isFullUrl(src)
-        ? src
-        : relativeToInputPath(this.page.inputPath, src);
-
-      const metadata = await eleventyImage(input, {
-        widths: !width ? ['auto'] : [width],
-        formats: ['jpeg'],
-        urlPath: '/tini-content/images/',
-        outputDir: path.join(eleventyConfig.dir.output, 'images'),
-      });
-
-      return metadata.jpeg[0].url;
+    'imageSingleData',
+    async function (target, ...params) {
+      return stringifyData(
+        await buildSingleAndExtractData.apply(this, params),
+        target
+      );
     }
   );
+
+  /*
+   * Filters
+   */
+
+  eleventyConfig.addFilter('image', buildImage);
+
+  eleventyConfig.addFilter('imageSingle', buildSingleImage);
+
+  eleventyConfig.addFilter('imageUrl', buildSingleAndExtractUrl);
+
+  eleventyConfig.addFilter('imageData', buildAndExtractData);
+
+  eleventyConfig.addFilter('imageSingleData', buildSingleAndExtractData);
 };
