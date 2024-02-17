@@ -20,6 +20,15 @@
     "11ty",
     "assets"
   ],
+  "tiniServer": {
+    "copy": {
+      "assets": "content"
+    },
+    "scripts": {
+      "content:build": "tini server build basic"
+    },
+    "buildCommand": "content:build"
+  },
   "scripts": {
     "build": "tsc",
     "lint": "gts lint",

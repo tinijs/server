@@ -2,7 +2,7 @@
 {
   "status": "publish",
   "title": "This is a sample post",
-  "desc": "This is a post on My Blog about win-win survival strategies.",
+  "excerpt": "This is a post on My Blog about win-win survival strategies.",
   "created": "2024-01-01",
   "updated": "2024-01-01",
   "thumbnail": "{% imageUrl './thumbnail.webp', 480 %}",
