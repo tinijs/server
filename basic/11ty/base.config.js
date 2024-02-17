@@ -5,11 +5,13 @@ const pluginBundle = require('@11ty/eleventy-plugin-bundle');
 const YAML = require('yaml');
 const TOML = require('@iarna/toml');
 
+const pluginElem = require('./elem.plugin.js');
 const pluginImage = require('./image.plugin.js');
 
 module.exports = function (eleventyConfig, options) {
   const {
     useCopy,
+    useElemPlugin,
     useImagePlugin,
     useRenderPlugin,
     useHighlightPlugin,
@@ -47,6 +49,10 @@ module.exports = function (eleventyConfig, options) {
   /*
    * Plugins
    */
+
+  if (useElemPlugin !== false) {
+    eleventyConfig.addPlugin(pluginElem);
+  }
 
   if (useImagePlugin !== false) {
     eleventyConfig.addPlugin(pluginImage);

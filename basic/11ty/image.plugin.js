@@ -131,19 +131,13 @@ module.exports = function (eleventyConfig) {
    * Shortcodes
    */
 
-  eleventyConfig.addAsyncShortcode('image', buildAndGenerateHTML);
+  eleventyConfig.addShortcode('image', buildAndGenerateHTML);
 
-  eleventyConfig.addAsyncShortcode('imageUrl', buildAndExtractUrl);
+  eleventyConfig.addShortcode('imageUrl', buildAndExtractUrl);
 
-  eleventyConfig.addAsyncShortcode(
-    'imageData',
-    async function (target, ...params) {
-      return stringifyData(
-        await buildAndExtractData.apply(this, params),
-        target
-      );
-    }
-  );
+  eleventyConfig.addShortcode('imageData', async function (target, ...params) {
+    return stringifyData(await buildAndExtractData.apply(this, params), target);
+  });
 
   /*
    * Filters
