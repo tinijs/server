@@ -3,32 +3,51 @@
 Turn your TiniJS projects in full-stack using one or more backend solutions.
 
 - [TiniJS Servers](#tinijs-servers)
-  - [Packages](#packages)
-    - [1. Basic](#1-basic)
-    - [2. Firebase](#2-firebase)
-    - [3. tRPC](#3-trpc)
-    - [4. NestJS](#4-nestjs)
-    - [5. Axum](#5-axum)
+  - [Official solutions](#official-solutions)
+    - [Basic](#basic)
+    - [Strapi](#strapi)
+    - [Firebase](#firebase)
+    - [Supabase](#supabase)
+    - [tRPC](#trpc)
+    - [NestJS](#nestjs)
+    - [Axum](#axum)
+    - [Tauri](#tauri)
   - [Developement](#developement)
   - [License](#license)
 
-## Packages
+## Official solutions
 
-### 1. Basic
+### Basic
 
-### 2. Firebase
+A basic file-based content system.
 
-// TODO
+Documentation: <https://server.tinijs.dev/basic>
 
-### 3. tRPC
-
-// TODO
-
-### 4. NestJS
+### Strapi
 
 // TODO
 
-### 5. Axum
+### Firebase
+
+// TODO
+
+### Supabase
+
+// TODO
+
+### tRPC
+
+// TODO
+
+### NestJS
+
+// TODO
+
+### Axum
+
+// TODO
+
+### Tauri
 
 // TODO
 
