@@ -4,26 +4,17 @@ Turn your TiniJS projects in full-stack using one or more backend solutions.
 
 - [TiniJS Servers](#tinijs-servers)
   - [Official solutions](#official-solutions)
-    - [Basic](#basic)
-    - [Strapi](#strapi)
     - [Firebase](#firebase)
     - [Supabase](#supabase)
     - [tRPC](#trpc)
     - [NestJS](#nestjs)
+    - [Strapi](#strapi)
     - [Axum](#axum)
     - [Tauri](#tauri)
   - [Developement](#developement)
   - [License](#license)
 
 ## Official solutions
-
-### Basic
-
-A basic file-based content system.
-
-### Strapi
-
-// TODO
 
 ### Firebase
 
@@ -38,6 +29,10 @@ A basic file-based content system.
 // TODO
 
 ### NestJS
+
+// TODO
+
+### Strapi
 
 // TODO
 
