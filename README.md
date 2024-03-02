@@ -21,8 +21,6 @@ Turn your TiniJS projects in full-stack using one or more backend solutions.
 
 A basic file-based content system.
 
-Documentation: <https://server.tinijs.dev/basic>
-
 ### Strapi
 
 // TODO
@@ -55,10 +53,10 @@ Documentation: <https://server.tinijs.dev/basic>
 
 - Create a home for TiniJS: `mkdir TiniJS && cd TiniJS`
 - Fork the repo
-- Install dependencies: `cd server && npm i`
+- Install dependencies: `cd servers && npm i`
 - Start development
 - Push changes & create a PR 👌
 
 ## License
 
-**TiniJS Servers** are released under the [MIT](https://github.com/tinijs/server/blob/master/LICENSE) license.
+**TiniJS Servers** are released under the [MIT](https://github.com/tinijs/servers/blob/master/LICENSE) license.

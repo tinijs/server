@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A basic file-based content system.",
   "author": "Lam Nhan",
-  "homepage": "https://server.tinijs.dev",
+  "homepage": "https://tinijs.dev",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
@@ -36,10 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tinijs/server.git"
+    "url": "git+https://github.com/tinijs/servers.git"
   },
   "bugs": {
-    "url": "https://github.com/tinijs/server/issues"
+    "url": "https://github.com/tinijs/servers/issues"
   },
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
